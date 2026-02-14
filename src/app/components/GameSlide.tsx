@@ -329,7 +329,7 @@ export const GameRunner: React.FC<Props> = ({ settings, onExit }) => {
           {/* Coluna esquerda: tudo alinhado entre si */}
           <div className="w-full max-w-6xl justify-self-center lg:justify-self-start text-left">
             <span className="inline-block bg-indigo-600/20 text-white px-8 py-2 rounded-full text-xl font-bold uppercase tracking-[0.4em]">
-              🧠 Quem sou eu?
+              Palavra Embaralhada
             </span>
 
             <div className="mt-4 space-y-6">
@@ -338,21 +338,11 @@ export const GameRunner: React.FC<Props> = ({ settings, onExit }) => {
                   {currentQuestion.text}
               </h1>
 
-              {(currentQuestion?.hint1 || currentQuestion?.hint2) && (
-                <div className="space-y-4">
-                  {currentQuestion.hint1 && (
-                    <p className="text-5xl md:text-7xl font-bold leading-tight balance text-white flex items-start gap-4">
-                      <span className="text-indigo-300 leading-[1] mt-3 select-none">•</span>
-                       {currentQuestion.hint1}
-                    </p>
-                  )}
-                  {currentQuestion.hint2 && (
-                    <p className="text-5xl md:text-7xl font-bold leading-tight balance text-white flex items-start gap-4">
-                      <span className="text-indigo-300 leading-[1] mt-3 select-none">•</span>
-                       {currentQuestion.hint2}
-                    </p>
-                  )}
-                </div>
+              {currentQuestion?.hint1 && (
+                <p className="text-5xl md:text-7xl font-bold leading-tight balance text-white flex items-start gap-4">
+                  <span className="text-indigo-300 leading-[1] mt-3 select-none">•</span>
+                   {currentQuestion.hint1}
+                </p>
               )}
             </div>
 

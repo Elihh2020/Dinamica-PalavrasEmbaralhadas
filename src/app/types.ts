@@ -33,5 +33,4 @@ export interface Question {
   options?: string[];          // ✅ só para MCQ (ex: 4 alternativas)
   correctIndex?: number;       // ✅ só para MCQ (0..3)
   hint1?: string;              // dica curta 1 (opcional)
-  hint2?: string;              // dica curta 2 (opcional)
 }

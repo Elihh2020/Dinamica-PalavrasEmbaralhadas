@@ -178,9 +178,9 @@ const App: React.FC = () => {
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-8 w-full max-w-[700px]">
               <h2 className="text-2xl font-bold flex items-center gap-2">
                 <span className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
-                  🧠❓
+                  
                 </span>
-                Quem sou eu ?
+                Palavras Embaralhadas
               </h2>
 
               <div className="space-y-6">

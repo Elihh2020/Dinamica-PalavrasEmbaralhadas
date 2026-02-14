@@ -58,7 +58,6 @@ async function main() {
         type VARCHAR(30),
         answer TEXT,
         hint1 TEXT,
-        hint2 TEXT,
         options JSONB,
         correct_index INT,
         created_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -67,15 +66,14 @@ async function main() {
 
     // Ensure hint columns exist on existing DB
     await pool.query(`ALTER TABLE questions ADD COLUMN IF NOT EXISTS hint1 TEXT;`);
-    await pool.query(`ALTER TABLE questions ADD COLUMN IF NOT EXISTS hint2 TEXT;`);
 
     // 2) Limpar e reiniciar IDs (opcional, mas recomendado em seed)
     await pool.query(`TRUNCATE TABLE questions RESTART IDENTITY;`);
 
     // 3) Inserir dados
     const insertSql = `
-      INSERT INTO questions (text, difficulty, type, answer, hint1, hint2, options, correct_index)
-      VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8)
+      INSERT INTO questions (text, difficulty, type, answer, hint1, options, correct_index)
+      VALUES ($1, $2, $3, $4, $5, $6::jsonb, $7)
     `;
 
     for (const q of questions) {
@@ -86,7 +84,6 @@ async function main() {
         q.difficulty ?? null,
         q.type,
         q.answer ?? null,
-        null,
         null,
         optionsJson,
         q.type === "multipla_escolha" ? q.correctIndex ?? null : null,

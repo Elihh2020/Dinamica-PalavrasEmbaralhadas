@@ -12,7 +12,6 @@ type CreateQuestionBody = {
   options?: string[];
   correctIndex?: number;
   hint1?: string;
-  hint2?: string;
 };
 
 function isNonEmptyString(v: unknown): v is string {
@@ -65,7 +64,7 @@ export async function GET(req: Request) {
     // dados
     // detect if hint columns exist (compat com DB antigo)
     const colRes = await pool.query(
-      `SELECT column_name FROM information_schema.columns WHERE table_name = 'questions' AND column_name IN ('hint1','hint2')`
+      `SELECT column_name FROM information_schema.columns WHERE table_name = 'questions' AND column_name = 'hint1'`
     );
     const cols = new Set(colRes.rows.map((r: any) => r.column_name));
 
@@ -78,7 +77,6 @@ export async function GET(req: Request) {
     ];
 
     if (cols.has('hint1')) selectCols.push('hint1');
-    if (cols.has('hint2')) selectCols.push('hint2');
 
     selectCols.push('options', `correct_index AS "correctIndex"`, `created_at AS "createdAt"`, `used_at AS "usedAt"`);
 
@@ -130,7 +128,6 @@ export async function POST(req: Request) {
     // Ensure hint columns exist so we can insert them (safe if already present)
     try {
       await pool.query(`ALTER TABLE questions ADD COLUMN IF NOT EXISTS hint1 TEXT;`);
-      await pool.query(`ALTER TABLE questions ADD COLUMN IF NOT EXISTS hint2 TEXT;`);
     } catch (e) {
       // non-fatal, continue
       console.warn("Could not ensure hint columns exist:", e);
@@ -167,7 +164,7 @@ export async function POST(req: Request) {
     // Se sua coluna `options` for TEXT[]: troque para passar `options` direto e remova o ::jsonb.
     // detect hint columns for insert
     const colRes2 = await pool.query(
-      `SELECT column_name FROM information_schema.columns WHERE table_name = 'questions' AND column_name IN ('hint1','hint2')`
+      `SELECT column_name FROM information_schema.columns WHERE table_name = 'questions' AND column_name = 'hint1'`
     );
     const insertCols: string[] = ['text', 'difficulty', 'type', 'answer'];
     const insertValues: any[] = [body.text.trim(), difficulty, dbType, answer];
@@ -175,10 +172,6 @@ export async function POST(req: Request) {
     if (colRes2.rows.some((r: any) => r.column_name === 'hint1')) {
       insertCols.push('hint1');
       insertValues.push(isNonEmptyString(body.hint1) ? body.hint1.trim() : null);
-    }
-    if (colRes2.rows.some((r: any) => r.column_name === 'hint2')) {
-      insertCols.push('hint2');
-      insertValues.push(isNonEmptyString(body.hint2) ? body.hint2.trim() : null);
     }
 
     insertCols.push('options', 'correct_index');
@@ -188,7 +181,7 @@ export async function POST(req: Request) {
     const insertQuery = `
       INSERT INTO questions (${insertCols.join(', ')})
       VALUES (${placeholders})
-      RETURNING id, text, difficulty, type, answer${colRes2.rows.some((r: any) => r.column_name === 'hint1') ? ', hint1' : ''}${colRes2.rows.some((r: any) => r.column_name === 'hint2') ? ', hint2' : ''}, options, correct_index AS "correctIndex", created_at AS "createdAt", used_at AS "usedAt"
+      RETURNING id, text, difficulty, type, answer${colRes2.rows.some((r: any) => r.column_name === 'hint1') ? ', hint1' : ''}, options, correct_index AS "correctIndex", created_at AS "createdAt", used_at AS "usedAt"
     `;
 
     const { rows } = await pool.query(insertQuery, insertValues);

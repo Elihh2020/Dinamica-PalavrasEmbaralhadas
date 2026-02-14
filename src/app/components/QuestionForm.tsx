@@ -25,9 +25,6 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
   const [answer, setAnswer] = useState("");
   const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.EASY);
 
-  const [hint1, setHint1] = useState("");
-  const [hint2, setHint2] = useState("");
-
   // tipo fixo: somente aberta ao cadastrar (radio removido)
 
   // ====== LISTA (FILTROS) ======
@@ -65,17 +62,6 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
       return;
     }
 
-    const h1 = hint1.trim();
-    const h2 = hint2.trim();
-    if (!h1) {
-      alert("Preencha a Dica 2.");
-      return;
-    }
-    if (!h2) {
-      alert("Preencha a Dica 3.");
-      return;
-    }
-
     // OPEN (tipo fixo)
     const aText = answer.trim();
     if (!aText) {
@@ -88,15 +74,11 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
       answer: aText,
       difficulty,
       type: "OPEN",
-      hint1: h1,
-      hint2: h2,
     });
 
     // reset
     setText("");
     setAnswer("");
-    setHint1("");
-    setHint2("");
   };
 
   // ====== CONTADORES / FILTROS (LISTA) ======
@@ -150,45 +132,19 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
           {/* ================== CARD 1 (CADASTRO) ================== */}
           <div className="w-full p-6 bg-white rounded-xl shadow-xl border border-slate-100 fade-in">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-bold text-slate-800">Cadastrar Nova Pergunta -"Quem sou eu?"</h2>
+              <h2 className="text-2xl font-bold text-slate-800">Cadastrar Nova Pergunta -"Palavras embaralhadas"</h2>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Dica 1 (curta) - era 'Pergunta' */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Dica 1</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Palavra</label>
                 <input
                   type="text"
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                  placeholder="Dica curta"
-                  required
-                />
-              </div>
-
-              {/* Dica 2 (obrigatória) */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Dica 2</label>
-                <input
-                  type="text"
-                  value={hint1}
-                  onChange={(e) => setHint1(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                  placeholder="Dica curta"
-                  required
-                />
-              </div>
-
-              {/* Dica 3 (obrigatória) */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Dica 3</label>
-                <input
-                  type="text"
-                  value={hint2}
-                  onChange={(e) => setHint2(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                  placeholder="Dica curta"
+                  placeholder="Digite a palavra embaralhada"
                   required
                 />
               </div>
