@@ -1,0 +1,6 @@
+
+{
+  "name": "Quiz Dinâmico Interativo",
+  "description": "Uma plataforma para criar e jogar dinâmicas de perguntas e respostas com níveis de dificuldade, cronômetros e visualização em tela cheia.",
+  "requestFramePermissions": []
+}
