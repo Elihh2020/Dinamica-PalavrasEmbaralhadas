@@ -180,7 +180,7 @@ const App: React.FC = () => {
                 <span className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
                   
                 </span>
-                Palavras Embaralhadas
+                DINÂMICA – PALAVRAS EMBARALHADAS
               </h2>
 
               <div className="space-y-6">
